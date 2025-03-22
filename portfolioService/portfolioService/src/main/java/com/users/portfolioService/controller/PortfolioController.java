@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.users.portfolioService.dtos.BuyStockRequest;
 import com.users.portfolioService.dtos.PortfolioResponse;
+import com.users.portfolioService.dtos.PortfolioStockDTO;
+import com.users.portfolioService.dtos.PortfolioValuationDTO;
 import com.users.portfolioService.dtos.SellStockRequest;
 import com.users.portfolioService.service.PortfolioService;
 
@@ -59,7 +61,15 @@ public class PortfolioController {
 	}
 
 	@GetMapping("/value")
-	public ResponseEntity<BigDecimal> getPortfolioValue(@RequestHeader("Authorization") String token) {
-		return ResponseEntity.ok(service.calculatePortfolioValue(extractEmailFromToken(token.replace("Bearer ", ""))));
+	public ResponseEntity<PortfolioValuationDTO> getPortfolioValue(@RequestHeader("Authorization") String token) {
+	    String email = service.extractEmailFromToken(token.replace("Bearer ", ""));
+	    return ResponseEntity.ok(service.calculatePortfolioSummary(email));
 	}
+	
+	@GetMapping("/holdings")
+    public ResponseEntity<List<PortfolioStockDTO>> getPortfolioHoldings(@RequestHeader("Authorization") String token) {
+        String email = service.extractEmailFromToken(token.replace("Bearer ", ""));
+        return ResponseEntity.ok(service.getPortfolioStockDetails(email));
+    }
+	
 }

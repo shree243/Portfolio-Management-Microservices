@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.users.portfolioService.dtos.BuyStockRequest;
 import com.users.portfolioService.dtos.PortfolioResponse;
+import com.users.portfolioService.dtos.PortfolioStockDTO;
+import com.users.portfolioService.dtos.PortfolioValuationDTO;
 import com.users.portfolioService.dtos.SellStockRequest;
 
 public interface PortfolioService {
@@ -15,4 +17,9 @@ public interface PortfolioService {
 	List<PortfolioResponse> getPortfolio(String email);
 
 	BigDecimal calculatePortfolioValue(String email);
+
+	List<PortfolioStockDTO> getPortfolioStockDetails(String email);
+	
+	 String extractEmailFromToken(String token);
+	 PortfolioValuationDTO calculatePortfolioSummary(String email);
 }
