@@ -19,7 +19,8 @@ public interface PortfolioService {
 	BigDecimal calculatePortfolioValue(String email);
 
 	List<PortfolioStockDTO> getPortfolioStockDetails(String email);
-	
-	 String extractEmailFromToken(String token);
-	 PortfolioValuationDTO calculatePortfolioSummary(String email);
+
+	String extractEmailFromToken(String token);
+
+	PortfolioValuationDTO calculatePortfolioSummary(String email);
 }

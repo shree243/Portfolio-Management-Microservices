@@ -4,48 +4,63 @@ import java.math.BigDecimal;
 
 public class PortfolioResponse {
 	private String stockSymbol;
-    private Integer quantity;
-    private BigDecimal buyPrice;
-    private BigDecimal sellPrice;
-    private BigDecimal profitOrLoss;
+	private Integer quantity;
+	private BigDecimal buyPrice;
+	private BigDecimal sellPrice;
+	private BigDecimal profitOrLoss;
 
-    public String getStockSymbol() {
-        return stockSymbol;
-    }
+	public PortfolioResponse() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public void setStockSymbol(String stockSymbol) {
-        this.stockSymbol = stockSymbol;
-    }
+	public PortfolioResponse(String stockSymbol, Integer quantity, BigDecimal buyPrice, BigDecimal sellPrice,
+			BigDecimal profitOrLoss) {
+		super();
+		this.stockSymbol = stockSymbol;
+		this.quantity = quantity;
+		this.buyPrice = buyPrice;
+		this.sellPrice = sellPrice;
+		this.profitOrLoss = profitOrLoss;
+	}
 
-    public Integer getQuantity() {
-        return quantity;
-    }
+	public String getStockSymbol() {
+		return stockSymbol;
+	}
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+	public void setStockSymbol(String stockSymbol) {
+		this.stockSymbol = stockSymbol;
+	}
 
-    public BigDecimal getBuyPrice() {
-        return buyPrice;
-    }
+	public Integer getQuantity() {
+		return quantity;
+	}
 
-    public void setBuyPrice(BigDecimal buyPrice) {
-        this.buyPrice = buyPrice;
-    }
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
 
-    public BigDecimal getSellPrice() {
-        return sellPrice;
-    }
+	public BigDecimal getBuyPrice() {
+		return buyPrice;
+	}
 
-    public void setSellPrice(BigDecimal sellPrice) {
-        this.sellPrice = sellPrice;
-    }
+	public void setBuyPrice(BigDecimal buyPrice) {
+		this.buyPrice = buyPrice;
+	}
 
-    public BigDecimal getProfitOrLoss() {
-        return profitOrLoss;
-    }
+	public BigDecimal getSellPrice() {
+		return sellPrice;
+	}
 
-    public void setProfitOrLoss(BigDecimal profitOrLoss) {
-        this.profitOrLoss = profitOrLoss;
-    }
+	public void setSellPrice(BigDecimal sellPrice) {
+		this.sellPrice = sellPrice;
+	}
+
+	public BigDecimal getProfitOrLoss() {
+		return profitOrLoss;
+	}
+
+	public void setProfitOrLoss(BigDecimal profitOrLoss) {
+		this.profitOrLoss = profitOrLoss;
+	}
 }

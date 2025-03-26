@@ -7,6 +7,7 @@ import java.util.Collections;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -24,7 +25,10 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-	private final String jwtSecret = "my-super-secret-key-for-jwt-signing-my-super-secret-key";
+	@Value("${jwt.secret}")
+    private String jwtSecret;
+	
+//	private final String jwtSecret = "my-super-secret-key-for-jwt-signing-my-super-secret-key";
 
 	private String extractUsername(String token) {
 		Key key = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");

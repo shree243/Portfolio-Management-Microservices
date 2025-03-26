@@ -8,7 +8,6 @@ public class UpdateProfileRequest {
 	private LocalDate dob;
 	private String kycStatus;
 
-	// Getters and Setters
 	public String getFullName() {
 		return fullName;
 	}

@@ -10,6 +10,13 @@ spring:
 
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
         - id: auth-service
           uri: lb://AUTH-SERVICE
@@ -27,6 +34,7 @@ spring:
           uri: lb://STOCK-SERVICE
           predicates:
             - Path=/api/stocks/**
+  
 
 eureka:
   client:

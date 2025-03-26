@@ -10,6 +10,18 @@ public class PortfolioStockDTO {
 	private BigDecimal currentPrice;
 	private BigDecimal currentValue;
 
+	
+	public PortfolioStockDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public PortfolioStockDTO(String stock, int quantity) {
+		super();
+		this.stock = stock;
+		this.quantity = quantity;
+	}
+
 	/**
 	 * @return the stock
 	 */

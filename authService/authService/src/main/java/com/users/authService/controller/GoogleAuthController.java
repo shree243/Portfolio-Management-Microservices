@@ -20,6 +20,11 @@ import com.users.authService.repository.RoleRepository;
 import com.users.authService.repository.UserRepository;
 import com.users.authService.service.JwtService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Google Authentication Controller",
+description = "To login the user using google Social Login")
 @RestController
 @RequestMapping("/api/auth")
 public class GoogleAuthController {
@@ -33,6 +38,9 @@ public class GoogleAuthController {
 	@Autowired
 	private JwtService jwtService;
 
+	  @Operation(summary = "Login the User using Google Social Login",
+			  description = " @param request contains Token Id"
+			      		+ "* @return JWT token if registration is successful")
 	@PostMapping("/google-login")
 	public ResponseEntity<AuthResponse> googleLogin(@RequestBody String idToken) throws Exception {
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);

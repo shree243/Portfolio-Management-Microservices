@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.users.stockService.controller.dto.CandlestickDTO;
+
 public interface StockPriceService {
 	BigDecimal fetchLivePrice(String symbol);
 
@@ -18,4 +20,6 @@ public interface StockPriceService {
 	Map<String, Object> getStockHistory(String symbol);
 
 	List<String> getTrendingStocks();
+
+	List<CandlestickDTO> getCandlestickData(String symbol);
 }

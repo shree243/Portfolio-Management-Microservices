@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "stock-service")
 public interface StockClient {
-	@GetMapping("/api/stock/price/{symbol}")
+	@GetMapping("/api/stocks/price/{symbol}")
 	BigDecimal getLivePrice(@PathVariable String symbol);
 }

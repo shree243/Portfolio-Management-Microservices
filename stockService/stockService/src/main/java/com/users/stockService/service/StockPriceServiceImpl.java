@@ -1,87 +1,41 @@
 package com.users.stockService.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.users.stockService.controller.dto.CandlestickDTO;
 
 @Service
 public class StockPriceServiceImpl implements StockPriceService {
 
-//    private static final String API_KEY = "M4OUEQMWECSI0P68"; // Replace with your actual API key
-//    private static final String API_KEY = "ITB0KMU7FKRKOMX7"; // Replace with your actual API key
-//    private static final String BASE_URL = "https://www.alphavantage.co/query";
-//
-//    private final RestTemplate restTemplate = new RestTemplate();
-//
-//    private final List<String> trendingSymbols = Arrays.asList("AAPL", "TSLA", "MSFT", "GOOGL", "AMZN");
-//
-//    @Override
-//    public BigDecimal fetchLivePrice(String symbol) {
-//        try {
-//            String url = BASE_URL + "?function=GLOBAL_QUOTE&symbol=" + symbol + "&apikey=" + API_KEY;
-//            Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-//            Map<String, String> quote = (Map<String, String>) response.get("Global Quote");
-//            return new BigDecimal(quote.get("05. price"));
-//        } catch (Exception e) {
-//            return BigDecimal.ZERO;
-//        }
-//    }
-//
-//    @Override
-//    public Map<String, String> fetchAllLivePrices() {
-//        Map<String, String> prices = new HashMap<>();
-//        for (String symbol : trendingSymbols) {
-//            try {
-//                BigDecimal price = fetchLivePrice(symbol);
-//                prices.put(symbol, price.toPlainString());
-//            } catch (Exception e) {
-//                prices.put(symbol, "0.00");
-//            }
-//        }
-//        return prices;
-//    }
-//
-//    @Override
-//    public List<String> getAvailableSymbols() {
-//        return trendingSymbols;
-//    }
-//
-//    @Override
-//    public List<Map<String, String>> searchStocks(String query) {
-//        String url = BASE_URL + "?function=SYMBOL_SEARCH&keywords=" + query + "&apikey=" + API_KEY;
-//        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-//        return (List<Map<String, String>>) response.get("bestMatches");
-//    }
-//
-//    @Override
-//    public Map<String, String> getStockDetails(String symbol) {
-//        String url = BASE_URL + "?function=GLOBAL_QUOTE&symbol=" + symbol + "&apikey=" + API_KEY;
-//        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-//        return (Map<String, String>) response.get("Global Quote");
-//    }
-//
-//    @Override
-//    public Map<String, Object> getStockHistory(String symbol) {
-//        String url = BASE_URL + "?function=TIME_SERIES_DAILY&symbol=" + symbol + "&apikey=" + API_KEY;
-//        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-//        return response;
-//    }
-//
-//    @Override
-//    public List<String> getTrendingStocks() {
-//        return trendingSymbols;
-//    }
+//	private static final String API_KEY = "cvfbc99r01qtu9s3scogcvfbc99r01qtu9s3scp0";
+//	private static final String ALPHA_VANTAGE_API_KEY = "94JHN1RZIUTHER9S";
+//	private static final String FINHUB_BASE_URL = "https://finnhub.io/api/v1";
 
-	private static final String API_KEY = "cvfbc99r01qtu9s3scogcvfbc99r01qtu9s3scp0";
-	private static final String BASE_URL = "https://finnhub.io/api/v1";
+	@Value("${api.alphavantage.key}")
+	private String alphaVantageKey;
+
+	@Value("${api.finnhub.key}")
+	private String finnhubKey;
+
+	@Value("${api.finnhub.base-url}")
+	private String finnhubBaseUrl;
 
 	private final RestTemplate restTemplate = new RestTemplate();
 
@@ -90,7 +44,7 @@ public class StockPriceServiceImpl implements StockPriceService {
 	@Override
 	public BigDecimal fetchLivePrice(String symbol) {
 		try {
-			String url = BASE_URL + "/quote?symbol=" + symbol + "&token=" + API_KEY;
+			String url = finnhubBaseUrl + "/quote?symbol=" + symbol + "&token=" + finnhubKey;
 			Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 			return new BigDecimal(String.valueOf(response.get("c"))); // current price
 		} catch (Exception e) {
@@ -119,20 +73,21 @@ public class StockPriceServiceImpl implements StockPriceService {
 
 	@Override
 	public List<Map<String, String>> searchStocks(String query) {
-		String url = BASE_URL + "/search?q=" + query + "&token=" + API_KEY;
+		String url = finnhubBaseUrl + "/search?q=" + query + "&token=" + finnhubKey;
 		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 		return (List<Map<String, String>>) response.get("result");
 	}
 
 	@Override
 	public Map<String, String> getStockDetails(String symbol) {
-		String url = BASE_URL + "/quote?symbol=" + symbol + "&token=" + API_KEY;
+		String url = finnhubBaseUrl + "/quote?symbol=" + symbol + "&token=" + finnhubKey;
 		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 		Map<String, String> details = new HashMap<>();
 		details.put("current", String.valueOf(response.get("c")));
 		details.put("high", String.valueOf(response.get("h")));
 		details.put("low", String.valueOf(response.get("l")));
 		details.put("open", String.valueOf(response.get("o")));
+		details.put("stockSymbol", symbol);
 		details.put("previousClose", String.valueOf(response.get("pc")));
 		return details;
 	}
@@ -143,12 +98,11 @@ public class StockPriceServiceImpl implements StockPriceService {
 		long to = Instant.now().getEpochSecond();
 		long from = Instant.now().minus(25, ChronoUnit.DAYS).getEpochSecond();
 
-		String url = BASE_URL + "/stock/candle?symbol=" + symbol +
-		             "&resolution=D&from=" + from + "&to=" + to +
-		             "&token=" + API_KEY;
+		String url = finnhubBaseUrl + "/stock/candle?symbol=" + symbol + "&resolution=D&from=" + from + "&to=" + to
+				+ "&token=" + finnhubKey;
 		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 		if (response.containsKey("s") && "no_data".equals(response.get("s"))) {
-		    return Map.of("message", "No historical data available for this symbol.");
+			return Map.of("message", "No historical data available for this symbol.");
 		}
 		return response;
 
@@ -159,65 +113,40 @@ public class StockPriceServiceImpl implements StockPriceService {
 		return trendingSymbols;
 	}
 
-//	private static final String API_KEY = "your_iex_cloud_api_key_here";
-//	private static final String BASE_URL = "https://cloud.iexapis.com/stable";
-//
-//	@Override
-//	public BigDecimal fetchLivePrice(String symbol) {
-//		try {
-//			String url = BASE_URL + "/stock/" + symbol + "/quote?token=" + API_KEY;
-//			Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-//			return new BigDecimal(String.valueOf(response.get("latestPrice")));
-//		} catch (Exception e) {
-//			return BigDecimal.ZERO;
-//		}
-//	}
-//
-//	@Override
-//	public List<Map<String, String>> searchStocks(String query) {
-//		String url = BASE_URL + "/search/" + query + "?token=" + API_KEY;
-//		List<Map<String, String>> response = restTemplate.getForObject(url, List.class);
-//		return response;
-//	}
-//
-//	@Override
-//	public Map<String, String> getStockDetails(String symbol) {
-//		String url = BASE_URL + "/stock/" + symbol + "/quote?token=" + API_KEY;
-//		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
-//		Map<String, String> details = new HashMap<>();
-//		details.put("current", String.valueOf(response.get("latestPrice")));
-//		details.put("high", String.valueOf(response.get("high")));
-//		details.put("low", String.valueOf(response.get("low")));
-//		details.put("open", String.valueOf(response.get("open")));
-//		details.put("previousClose", String.valueOf(response.get("previousClose")));
-//		return details;
-//	}
-//
-//	@Override
-//	public Map<String, Object> getStockHistory(String symbol) {
-//		String url = BASE_URL + "/stock/" + symbol + "/chart/1m?token=" + API_KEY;
-//		List<Map<String, Object>> response = restTemplate.getForObject(url, List.class);
-//		Map<String, Object> history = new HashMap<>();
-//		history.put("data", response);
-//		return history;
-//	}
-//
-//	@Override
-//	public Map<String, String> fetchAllLivePrices() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<String> getAvailableSymbols() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<String> getTrendingStocks() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public List<CandlestickDTO> getCandlestickData(String symbol) {
+		String url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY" + "&symbol=" + symbol.toUpperCase()
+				+ "&outputsize=full" + "&apikey=" + alphaVantageKey;
 
+		try {
+			String response = restTemplate.getForObject(url, String.class);
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode root = mapper.readTree(response);
+			JsonNode timeSeries = root.path("Time Series (Daily)");
+
+			if (timeSeries.isMissingNode()) {
+				throw new RuntimeException("Invalid API response for symbol: " + symbol);
+			}
+
+			List<CandlestickDTO> candles = new ArrayList<>();
+
+			Iterator<String> dates = timeSeries.fieldNames();
+			while (dates.hasNext()) {
+				String dateStr = dates.next();
+				JsonNode day = timeSeries.get(dateStr);
+
+				candles.add(new CandlestickDTO(LocalDate.parse(dateStr), new BigDecimal(day.get("1. open").asText()),
+						new BigDecimal(day.get("2. high").asText()), new BigDecimal(day.get("3. low").asText()),
+						new BigDecimal(day.get("4. close").asText())));
+			}
+
+			candles.sort(Comparator.comparing(CandlestickDTO::getDate));
+
+			LocalDate sixMonthsAgo = LocalDate.now().minusMonths(6);
+			return candles.stream().filter(c -> c.getDate().isAfter(sixMonthsAgo)).collect(Collectors.toList());
+
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to fetch candlestick data", e);
+		}
+	}
 }
