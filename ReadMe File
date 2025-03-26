@@ -1,0 +1,91 @@
+# Stock Portfolio Management Application (Microservices)
+
+A full-stack microservice-based application that allows users to manage their stock portfolio, track real-time prices, and view performance analytics. 
+Built with Java 17, Spring Boot 3.2.2, and Angular 19.
+
+---
+
+** Microservices Architecture
+
+The system is composed of the following services:
+
+ Microservice         | Purpose 
+----------------------|---------
+	API Gateway       | Routes and load balances incoming requests |
+	Service Registry  | Maintains service discovery via Eureka |
+	Auth Service      | Handles registration, login, Google OAuth |
+	User Service      | Manages user profile data |
+	Portfolio Service | Stores and computes portfolio holdings |
+	Stock Service     | Fetches real-time and historical stock prices |
+
+---
+
+** Tech Stack
+
+ Layer         | Technology                    
+---------------|-------------------------------
+ Backend       | Java 17, Spring Boot 3.2.2     
+ Frontend      | Angular 19 used                    
+ Database      | MySQL                          
+ API Clients   | [Alpha Vantage](https://www.alphavantage.co), [Finnhub](https://finnhub.io) |
+ Auth          | JWT + Google OAuth -> but google could not perform due to time constrain. Firebase and Google auth config files are present in front end and backend      
+ Build Tools   | Maven, Node.js v20.10.0        
+
+---
+
+
+ Features
+1. User Registration and Login (normal + Google)
+
+2. Add/Remove/View stocks in your portfolio
+
+3. Real-time stock price tracking
+
+4. Portfolio valuation and performance calculation
+
+5. Microservices with Spring Cloud Gateway & Eureka
+
+6. Responsive Angular UI
+
+
+ 1. Setup Instructions
+	1.1  can clone the repository from git or can extract the zip
+	Front end-->  https://github.com/shree243/front-end.git
+	Back end -->  https://github.com/shree243/Portfolio-Management-Microservices.git
+	1.2 Can extract the zip
+
+
+2. Backend Setup (Java)
+JDK 17 and Maven installed.
+
+2.1 Database Connection: -> 
+	Need to change database url, username, password in every application.yml or application.properties file for database connection  with your DB credentials.
+
+Example:
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/portfolio_db
+    username: your_mysql_username
+    password: your_mysql_password
+	
+	
+2.2  Public api keys from below websites-> 
+	Provide your own API keys from Alpha Vantage and Finnhub source in Stock Service application.yml file 
+	
+
+3. Frontend Setup (Angular)
+	cd frontend/
+	npm install
+	npm start
+
+
+4. How to run->
+	4.1 First start the ServiceRegistry in backend
+	4.2 start the Api Gateway
+	4.3 Start the Auth Service
+	4.4 Start the Portfolio Service
+	4.5 Start the Stock Service
+	4.6 Start the User Service
+	4.7 Start the front end-> Npm start
+	

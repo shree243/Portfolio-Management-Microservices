@@ -23,7 +23,6 @@ logging:
 api:
   finnhub:
     key: cvfbc99r01qtu9s3scogcvfbc99r01qtu9s3scp0
-      base-url: https://finnhub.io/api/v1
 
   alphavantage:
     key: 94JHN1RZIUTHER9S

@@ -26,16 +26,13 @@ public class StockPriceServiceImpl implements StockPriceService {
 
 //	private static final String API_KEY = "cvfbc99r01qtu9s3scogcvfbc99r01qtu9s3scp0";
 //	private static final String ALPHA_VANTAGE_API_KEY = "94JHN1RZIUTHER9S";
-//	private static final String FINHUB_BASE_URL = "https://finnhub.io/api/v1";
+	private static final String FINHUB_BASE_URL = "https://finnhub.io/api/v1";
 
 	@Value("${api.alphavantage.key}")
 	private String alphaVantageKey;
 
 	@Value("${api.finnhub.key}")
 	private String finnhubKey;
-
-	@Value("${api.finnhub.base-url}")
-	private String finnhubBaseUrl;
 
 	private final RestTemplate restTemplate = new RestTemplate();
 
@@ -44,7 +41,7 @@ public class StockPriceServiceImpl implements StockPriceService {
 	@Override
 	public BigDecimal fetchLivePrice(String symbol) {
 		try {
-			String url = finnhubBaseUrl + "/quote?symbol=" + symbol + "&token=" + finnhubKey;
+			String url = FINHUB_BASE_URL + "/quote?symbol=" + symbol + "&token=" + finnhubKey;
 			Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 			return new BigDecimal(String.valueOf(response.get("c"))); // current price
 		} catch (Exception e) {
@@ -73,14 +70,14 @@ public class StockPriceServiceImpl implements StockPriceService {
 
 	@Override
 	public List<Map<String, String>> searchStocks(String query) {
-		String url = finnhubBaseUrl + "/search?q=" + query + "&token=" + finnhubKey;
+		String url = FINHUB_BASE_URL + "/search?q=" + query + "&token=" + finnhubKey;
 		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 		return (List<Map<String, String>>) response.get("result");
 	}
 
 	@Override
 	public Map<String, String> getStockDetails(String symbol) {
-		String url = finnhubBaseUrl + "/quote?symbol=" + symbol + "&token=" + finnhubKey;
+		String url = FINHUB_BASE_URL + "/quote?symbol=" + symbol + "&token=" + finnhubKey;
 		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 		Map<String, String> details = new HashMap<>();
 		details.put("current", String.valueOf(response.get("c")));
@@ -98,7 +95,7 @@ public class StockPriceServiceImpl implements StockPriceService {
 		long to = Instant.now().getEpochSecond();
 		long from = Instant.now().minus(25, ChronoUnit.DAYS).getEpochSecond();
 
-		String url = finnhubBaseUrl + "/stock/candle?symbol=" + symbol + "&resolution=D&from=" + from + "&to=" + to
+		String url = FINHUB_BASE_URL + "/stock/candle?symbol=" + symbol + "&resolution=D&from=" + from + "&to=" + to
 				+ "&token=" + finnhubKey;
 		Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 		if (response.containsKey("s") && "no_data".equals(response.get("s"))) {
