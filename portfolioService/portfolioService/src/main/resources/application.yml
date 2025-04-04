@@ -6,9 +6,9 @@ spring:
     name: portfolio-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/portfolio_db
-    username: root
-    password: Shreepad@123
+    url: jdbc:mysql://localhost:3306/xxxxx
+    username: xxxxx
+    password: xxx
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -27,4 +27,4 @@ eureka:
     fetch-registry: true
 
 jwt:
-  secret: my-super-secret-key-for-jwt-signing-my-super-secret-key
+  secret: xxxxxx

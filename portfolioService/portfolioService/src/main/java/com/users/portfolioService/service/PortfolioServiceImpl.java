@@ -37,7 +37,6 @@ public class PortfolioServiceImpl implements PortfolioService {
 
 	@Value("${jwt.secret}")
     private String jwtSecret;
-//	private final String jwtSecret = "my-super-secret-key-for-jwt-signing-my-super-secret-key";
 	
 	@Override
 	public String extractEmailFromToken(String token) {
@@ -96,9 +95,9 @@ public class PortfolioServiceImpl implements PortfolioService {
 	        entry.setUpdatedAt(LocalDateTime.now());
 
 	        if (entry.getQuantity() == 0) {
-	            repository.delete(entry); // 💥 Remove entry from DB
+	            repository.delete(entry); 
 	        } else {
-	            repository.save(entry);   // ✅ Save updated entry if some quantity is left
+	            repository.save(entry);   
 	        }
 
 	    } catch (Exception ex) {

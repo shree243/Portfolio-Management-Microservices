@@ -22,7 +22,7 @@ logging:
 
 api:
   finnhub:
-    key: cvfbc99r01qtu9s3scogcvfbc99r01qtu9s3scp0
+    key: xxxxxxx
 
   alphavantage:
-    key: 94JHN1RZIUTHER9S
+    key: xxxx

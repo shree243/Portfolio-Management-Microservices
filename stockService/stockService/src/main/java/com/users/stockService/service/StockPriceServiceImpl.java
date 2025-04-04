@@ -24,8 +24,6 @@ import com.users.stockService.controller.dto.CandlestickDTO;
 @Service
 public class StockPriceServiceImpl implements StockPriceService {
 
-//	private static final String API_KEY = "cvfbc99r01qtu9s3scogcvfbc99r01qtu9s3scp0";
-//	private static final String ALPHA_VANTAGE_API_KEY = "94JHN1RZIUTHER9S";
 	private static final String FINHUB_BASE_URL = "https://finnhub.io/api/v1";
 
 	@Value("${api.alphavantage.key}")
@@ -91,7 +89,6 @@ public class StockPriceServiceImpl implements StockPriceService {
 
 	@Override
 	public Map<String, Object> getStockHistory(String symbol) {
-		// Finnhub requires UNIX timestamps, can be enhanced with date ranges later
 		long to = Instant.now().getEpochSecond();
 		long from = Instant.now().minus(25, ChronoUnit.DAYS).getEpochSecond();
 

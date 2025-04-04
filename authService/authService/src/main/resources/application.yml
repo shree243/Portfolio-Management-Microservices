@@ -5,9 +5,9 @@ spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:mysql://localhost:3306/auth
+    url: jdbc:mysql://localhost:3306/xx
     username: root
-    password: Shreepad@123
+    password: xxxxxxx
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -19,7 +19,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
 jwt:
-  secret: my-super-secret-key-for-jwt-signing-my-super-secret-key
+  secret: xxxx
   expiration: 86400000 # 24 hours in milliseconds
 
 logging:

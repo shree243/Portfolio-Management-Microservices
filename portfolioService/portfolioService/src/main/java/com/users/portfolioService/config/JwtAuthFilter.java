@@ -25,7 +25,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-//	private final String jwtSecret = "my-super-secret-key-for-jwt-signing-my-super-secret-key";
 	@Value("${jwt.secret}")
 	private String jwtSecret;
 

@@ -28,7 +28,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	@Value("${jwt.secret}")
     private String jwtSecret;
 	
-//	private final String jwtSecret = "my-super-secret-key-for-jwt-signing-my-super-secret-key";
 
 	private String extractUsername(String token) {
 		Key key = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");

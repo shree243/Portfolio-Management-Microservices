@@ -34,7 +34,7 @@ public class UserProfileController {
 	@Autowired
 	private UserProfileService service;
 
-	private final String jwtSecret = "my-super-secret-key-for-jwt-signing-my-super-secret-key";
+	private final String jwtSecret = "";
 
 	private String extractEmailFromToken(String token) {
 		Key key = new SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");

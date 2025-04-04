@@ -44,4 +44,4 @@ eureka:
     fetch-registry: true
 
 jwt:
-  secret: my-super-secret-key-for-jwt-signing-my-super-secret-key
+  secret: xxxxxxx
